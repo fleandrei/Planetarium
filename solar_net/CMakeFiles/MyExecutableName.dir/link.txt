@@ -1,0 +1,1 @@
+/usr/bin/c++    -Wno-invalid-offsetof -march=native -ffast-math -m64 -pthread -O3 -DNDEBUG   CMakeFiles/MyExecutableName.dir/Rotator.cpp.o CMakeFiles/MyExecutableName.dir/StaticScene.cpp.o  -o bin/MyExecutableName -rdynamic /home/sasl/encad/pecheux/urh15/lib/libUrho3D.a -ldl -lrt -lGL 

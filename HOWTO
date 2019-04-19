@@ -1,0 +1,12 @@
+export URHO3D_HOME=/home/sasl/encad/pecheux/urh15
+copier CMakeLists.txt
+copier StaticScene.*
+copier Sample.*
+ln -s /home/sasl/encad/pecheux/Urho3D-1.5/CMake .
+faire cmake .
+aller dans bin
+et creer les liens symboliques
+ln -s /home/sasl/encad/pecheux/Urho3D-1.5/bin/Data .
+ln -s /home/sasl/encad/pecheux/Urho3D-1.5/bin/CoreData .
+revenir dans ..
+make
