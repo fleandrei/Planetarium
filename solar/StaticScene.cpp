@@ -103,16 +103,20 @@ void StaticScene::CreateScene()
     Node* planeNode = scene_->CreateChild("Plane");
     planeNode->SetScale(Vector3(20.0f, 1.0f, 20.0f));
     StaticModel* planeObject = planeNode->CreateComponent<StaticModel>();
-    planeObject->SetModel(cache->GetResource<Model>("bin/resources/Models/Disk.mdl"));
-    planeObject->SetMaterial(cache->GetResource<Material>("bin/resources/Materials/GreenTransparent.xml"));
+    planeObject->SetModel(cache->GetResource<Model>("bin/Data/Models/Disk.mdl"));
+    planeObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/GreenTransparent.xml"));
 
     sunPosNode = scene_->CreateChild("SunPos");
     sunPosNode->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 
     sunPosRotNode = sunPosNode->CreateChild("SunPosRot");
     sunPosRotNode->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    sunPosRotNode->SetScale(Vector3(100.0f, 100.0f, 100.0f));
     Rotator* rotatorSunPosRot = sunPosRotNode->CreateComponent<Rotator>();
     rotatorSunPosRot->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));
+    StaticModel* sunObject = sunPosRotNode->CreateComponent<StaticModel>();
+    sunObject->SetModel(cache->GetResource<Model>("bin/Data/Models/Sphere.mdl"));
+    sunObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/GreenTransparent.xml"));
 
     earthPosNode = sunPosRotNode->CreateChild("EarthPos");
     earthPosNode->SetPosition(Vector3(20.0f, 0.0f, 0.0f));
@@ -128,14 +132,14 @@ void StaticScene::CreateScene()
     cylinderInclinedNode->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
     cylinderInclinedNode->SetScale(Vector3(1.0f, 20.0f, 1.0f));
     StaticModel* cylinderInclinedObject = cylinderInclinedNode->CreateComponent<StaticModel>();
-    cylinderInclinedObject->SetModel(cache->GetResource<Model>("bin/resources/Models/cyl10.mdl"));
+    cylinderInclinedObject->SetModel(cache->GetResource<Model>("bin/resource/Models/cyl10.mdl"));
 
     Node* earthNode = earthInclinedNode->CreateChild("Earth");
     //Node* earthNode = earthPosNode->CreateChild("Earth");
     earthNode->SetScale(Vector3(10.0f, 10.0f, 10.0f));
     StaticModel* earthObject = earthNode->CreateComponent<StaticModel>();
-    earthObject->SetModel(cache->GetResource<Model>("bin/resources/Models/Sphere.mdl"));
-    earthObject->SetMaterial(cache->GetResource<Material>("bin/resources/Materials/earthmap.xml"));
+    earthObject->SetModel(cache->GetResource<Model>("bin/resource/Models/Sphere.mdl"));
+    earthObject->SetMaterial(cache->GetResource<Material>("bin/resource/Materials/earthmap.xml"));
     Rotator* rotator = earthNode->CreateComponent<Rotator>();
     rotator->SetRotationSpeed(Vector3(0.0f, -30.0f, 0.0f));
 
@@ -148,7 +152,7 @@ void StaticScene::CreateScene()
     moonNode->SetPosition(Vector3(10.0f, 0.0f, 0.0f));
     moonNode->SetScale(Vector3(5.0f, 5.0f, 5.0f));
     StaticModel* moonObject = moonNode->CreateComponent<StaticModel>();
-    moonObject->SetModel(cache->GetResource<Model>("bin/resources/Models/Sphere.mdl"));
+    moonObject->SetModel(cache->GetResource<Model>("bin/Data/Models/Sphere.mdl"));
     //moonObject->SetMaterial(cache->GetResource<Material>("Materials/earthmap.xml"));
     //Rotator* rotatorMoon = moonNode->CreateComponent<Rotator>();
     //rotatorMoon->SetRotationSpeed(Vector3(0.0f, -50.0f, 0.0f));
