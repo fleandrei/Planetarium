@@ -109,4 +109,7 @@ private:
     Node *earthPosNode;
     Node *sunPosNode;
     Node *sunPosRotNode;
+
+    int myPort;
+    int myAngle;
 };

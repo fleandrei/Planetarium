@@ -55,7 +55,17 @@ URHO3D_DEFINE_APPLICATION_MAIN(StaticScene)
 StaticScene::StaticScene(Context* context) :
     Sample(context)
 {
-	context->RegisterFactory<Rotator>();
+
+	//myPort=0;
+    //myAngle=0;
+    context->RegisterFactory<Rotator>();
+    const Vector<String>& arguments=GetArguments();
+
+   sscanf(arguments[0].CString(),"%d",&myPort);
+   sscanf(arguments[1].CString(),"%d",&myAngle);
+
+   printf("myPort=%d myAngle=%d\n",myPort, myAngle);
+
 }
 
 void StaticScene::Start()
@@ -331,6 +341,24 @@ void StaticScene::CreateScene()
     // Create a directional light to the world so that we can see something. The light scene node's orientation controls the
     // light direction; we will use the SetDirection() function which calculates the orientation from a forward direction vector.
     // The light will use default settings (white light, no shadows)
+    
+
+
+    Node* lightNodecentr = scene_->CreateChild();
+    lightNodecentr->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    //lightNode->SetDirection(Vector3(0.0f, 0.0f, 0.0f)); // The direction vector does not need to be normalized
+    Light* lightcentre = lightNodecentr->CreateComponent<Light>();
+    //light->SetLightType(LIGHT_DIRECTIONAL);
+    lightcentre->SetBrightness(7.0);
+
+    Node* lightNodeleft = scene_->CreateChild();
+    lightNodeleft->SetPosition(Vector3(7.0f, 0.0f, 0.0f));
+    //lightNode->SetDirection(Vector3(0.0f, 0.0f, 0.0f)); // The direction vector does not need to be normalized
+    Light* lightleft = lightNodeleft->CreateComponent<Light>();
+    //light->SetLightType(LIGHT_DIRECTIONAL);
+    lightleft->SetBrightness(7.0);
+
+
     Node* lightNode = scene_->CreateChild("DirectionalLight");
     lightNode->SetDirection(Vector3(0.6f, -1.0f, 0.8f)); // The direction vector does not need to be normalized
     Light* light = lightNode->CreateComponent<Light>();
@@ -395,7 +423,7 @@ void StaticScene::MoveCamera(float timeStep)
     //pitch_ = 60.0f;
 
     pitch_ = Clamp(pitch_, -90.0f, 90.0f);
-
+    
     // Read WASD keys and move the camera scene node to the corresponding direction if they are pressed
     // Use the Translate() function (default local space) to move relative to the node's orientation.
     if (input->GetKeyDown('W'))
@@ -447,10 +475,28 @@ void StaticScene::MoveCamera(float timeStep)
 		ManageJoystick(timeStep);
 */
 
-    // Construct new orientation for the camera scene node from yaw and pitch. Roll is fixed to zero
-    cameraNode_->SetRotation(Quaternion(pitch_, yaw_, 0.0f));
 
+     if (input->GetKeyPress('I'))
+        {
+        printf("I\n");
+        myAngle-=36;
+        printf("myAngle=%d\n",myAngle);
+        cameraNode_->SetRotation(Quaternion(pitch_, (float)myAngle, 0.0f));
+    }else if (input->GetKeyPress('O'))
+    {
+        printf("O\n");
+        myAngle+=36;
+        printf("myAngle=%d\n",myAngle);
+        cameraNode_->SetRotation(Quaternion(pitch_, (float)myAngle, 0.0f));
+    }else{
+         // Construct new orientation for the camera scene node from yaw and pitch. Roll is fixed to zero
+    
+        cameraNode_->SetRotation(Quaternion(pitch_, yaw_, 0.0f));
+    }
 }
+
+
+   
 
 void StaticScene::ManageJoystick(float timeStep)
 {
@@ -629,9 +675,10 @@ void StaticScene::HandleNetworkMessage(StringHash eventType, VariantMap& eventDa
         int msgID = eventData[P_MESSAGEID].GetInt();
         Connection* remoteSender = static_cast<Connection*>(eventData[P_CONNECTION].GetPtr());
 
+       
         std::cout << "HandleNetworkMessage" << std::endl;
 
-        if (msgID == MSG_GAME)
+        if (msgID == MSG_GAME) 
         {
                 const PODVector<unsigned char>& data = eventData[P_DATA].GetBuffer();
                 // Use a MemoryBuffer to read the message data so that there is no unnecessary copying
@@ -641,6 +688,12 @@ void StaticScene::HandleNetworkMessage(StringHash eventType, VariantMap& eventDa
                 int tx,tz,tnum,torient;
                 strcpy(s,text.CString());
                 printf("Message received:%s\n",s);
+        
+        // RAJOUTER DU CODE POUR DECODER ET GERER LES MESSAGES DU CLIENT
+
+            if (s[0]=='X')
+            {
+            }
         }
 }
 
@@ -817,6 +870,6 @@ void StaticScene::moveObjectToPoint(char *uniqname, char *pointname)
 	std::cout << "moveObjectToPoint " << uniqname << "," << pointname << std::endl;
 
         Node* oNode = nodeMap[uniqname];
-	Vector3 *n=pointMap[pointname];
+	Vector3 *n=pointMap[pointname]; 
         oNode->SetPosition(*n);
 }
