@@ -111,44 +111,41 @@ void StaticScene::CreateScene()
 
     Node* planeNode = scene_->CreateChild("Plane");
     planeNode->SetScale(Vector3(70.0f, 7.0f, 70.0f));
-    StaticModel* planeObject = planeNode->CreateComponent<StaticModel>();
+    /*StaticModel* planeObject = planeNode->CreateComponent<StaticModel>();
     planeObject->SetModel(cache->GetResource<Model>("bin/Data/Models/Disk.mdl"));
     planeObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/GreenTransparent.xml"));
-
+*/
     /*Création Soleil*/
     sunPosNode = scene_->CreateChild("SunPos");
     sunPosNode->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-
-    sunPosRotNode = sunPosNode->CreateChild("SunPosRot");
-    sunPosRotNode->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-    Rotator* rotatorSunPosRot = sunPosRotNode->CreateComponent<Rotator>();
-    rotatorSunPosRot->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));
-    Node* Sun=sunPosRotNode->CreateChild("Sun");
+    Node* earth_revol = sunPosNode->CreateChild("SunPosRot");
+    earth_revol->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    Rotator* rotator_earth_revol = earth_revol->CreateComponent<Rotator>();
+    rotator_earth_revol->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));
+    Node* Sun=sunPosNode->CreateChild("Sun");
     Sun->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
     Sun->SetScale(Vector3(40.0f, 40.0f, 40.0f));
     StaticModel* sunObject = Sun->CreateComponent<StaticModel>();
     sunObject->SetModel(cache->GetResource<Model>("bin/Data/Models/Sphere.mdl"));
-    sunObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/gameboard.xml"));
+    sunObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/sunmap.xml"));
 
-
+    
     /*Création Terre*/
-    earthPosNode = sunPosRotNode->CreateChild("EarthPos");
-    earthPosNode->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
+    earthPosNode = earth_revol->CreateChild("EarthPos");
+    earthPosNode->SetPosition(Vector3(50.0f, 0.0f, 0.0f));//distance Terre_Soleil
     //earthPosNode->SetScale(Vector3(1.0f, 1.0f, 1.0f));
     //Rotator* rotatorEarthPos = earthPosNode->CreateComponent<Rotator>();
     //rotatorEarthPos->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));
-
     Node* earthInclinedNode = earthPosNode->CreateChild("EarthInclined");
     earthInclinedNode->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-    earthInclinedNode->SetRotation(Quaternion(0.0f, 0.0f, 23.0f));
+    earthInclinedNode->SetRotation(Quaternion(0.0f, 0.0f, 23.0f)); //Inclinaison de 23° par rapport à l'écliptique
 
-    Node* cylinderInclinedNode = earthInclinedNode->CreateChild("cylinderInclined");
+    Node* cylinderInclinedNode = earthInclinedNode->CreateChild("cylinderInclined");//Axe de rotation
     cylinderInclinedNode->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-    cylinderInclinedNode->SetScale(Vector3(1.0f, 25.0f, 1.0f));
+    cylinderInclinedNode->SetScale(Vector3(0.50f, 12.0f, 0.50f));
     StaticModel* cylinderInclinedObject = cylinderInclinedNode->CreateComponent<StaticModel>();
     cylinderInclinedObject->SetModel(cache->GetResource<Model>("Models/Cylinder.mdl"));
     cylinderInclinedObject->SetMaterial(cache->GetResource<Material>("Materials/cyl10.xml"));
-
     Node* earthNode = earthInclinedNode->CreateChild("Earth");
     //Node* earthNode = earthPosNode->CreateChild("Earth");
     earthNode->SetScale(Vector3(10.0f, 10.0f, 10.0f));
@@ -158,32 +155,174 @@ void StaticScene::CreateScene()
     Rotator* earthnoderotator = earthNode->CreateComponent<Rotator>();
     earthnoderotator->SetRotationSpeed(Vector3(0.0f, -100.0f, 0.0f));
 
-    Node* earthPosRotNode = earthPosNode->CreateChild("EarthPosRot");
-    earthPosRotNode->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-    Rotator* rotatorEarthPosRot = earthPosRotNode->CreateComponent<Rotator>();
-    rotatorEarthPosRot->SetRotationSpeed(Vector3(0.0f, -100.0f, 0.0f));
+    Node* moon_revol = earthPosNode->CreateChild("EarthPosRot");
+    moon_revol->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    moon_revol->SetRotation(Quaternion(0.0f, 0.0f, 5.16f));
+    Rotator* rotator_moon_revol = moon_revol->CreateComponent<Rotator>();
+    rotator_moon_revol->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));
 
-    Node* moonNode = earthInclinedNode->CreateChild("Moon");
+    Node* moonNode = moon_revol->CreateChild("Moon");
     moonNode->SetPosition(Vector3(10.0f, 0.0f, 0.0f));
     moonNode->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-    Rotator* moonrevolution= moonNode->CreateComponent<Rotator>();
-    moonrevolution->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));
-    
+    moonNode->SetRotation(Quaternion(0.0f, 0.0f, 6.68f));
+    Rotator* moon_rot= moonNode->CreateComponent<Rotator>();
+    moon_rot->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));
+    /*
     Node* moonrotNode=moonNode->CreateChild("Moonrot");
     Rotator* rotatormoon = moonrotNode->CreateComponent<Rotator>();
-    rotatormoon->SetRotationSpeed(Vector3(0.0f, -30.0f, 0.0f));
+    rotatormoon->SetRotationSpeed(Vector3(0.0f, -30.0f, 0.0f));*/
 
-    StaticModel* moonObject = moonrotNode->CreateComponent<StaticModel>();
+    StaticModel* moonObject = moonNode->CreateComponent<StaticModel>();
     moonObject->SetModel(cache->GetResource<Model>("Models/Sphere.mdl"));
+    moonObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/moonmap.xml"));
 
+    
+    /*MERCURE*/
+    Node* mercure_revol= sunPosNode->CreateChild("revol_mercure"); //Révolution autour du soleil
+    Rotator* rotator_mercure_revol= mercure_revol->CreateComponent<Rotator>();
+    rotator_mercure_revol->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));
 
-    Node* MercurePosNode = sunPosRotNode->CreateChild("");
-    MercurePosNode->SetPosition(Vector3(10.0f, 0.0f, 0.0f));
-    MercurePosNode->SetScale(Vector3(5.0f, 5.0f, 5.0f));
-    StaticModel* mercureObject = moonNode->CreateComponent<StaticModel>();
+    Node* MercureNode = mercure_revol->CreateChild("MercurePosNode");
+    MercureNode->SetPosition(Vector3(10.0f, 0.0f, 0.0f)); //Distance Soleil
+    MercureNode->SetScale(Vector3(5.0f, 5.0f, 5.0f)); //Taille
+    Rotator* mercure_rot= MercureNode->CreateComponent<Rotator>();
+    mercure_rot->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f)); //Vitesse rotation
+    StaticModel* mercureObject = MercureNode->CreateComponent<StaticModel>();
     mercureObject->SetModel(cache->GetResource<Model>("Models/Sphere.mdl"));
+    mercureObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/mercurymap.xml"));
 
 
+    /*VENUS*/
+    Node* venus_revol= sunPosNode->CreateChild("revol_venus"); 
+    venus_revol->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    venus_revol->SetRotation(Quaternion(0.0f, 0.0f, 3.39f));//inclinaison par rapport à l'axe de l'écliptique
+    Rotator* rotator_venus_revol= venus_revol->CreateComponent<Rotator>();
+    rotator_venus_revol->SetRotationSpeed(Vector3(0.0f, 10.0f, 0.0f));//Revolution autour du Soleil
+
+    Node* VenusNode=venus_revol->CreateChild("Venus_node");
+    VenusNode->SetPosition(Vector3(40.0f, 0.0f, 0.0f));
+    VenusNode->SetRotation(Quaternion(0.0f, 0.0f, 177.36f));
+    VenusNode->SetScale(Vector3(5.0f, 5.0f, 5.0f)); //Taille
+    Rotator* venus_rot= VenusNode->CreateComponent<Rotator>();
+    venus_rot->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f)); //Vitesse rotation
+    StaticModel* venusObject = VenusNode->CreateComponent<StaticModel>();
+    venusObject->SetModel(cache->GetResource<Model>("Models/Sphere.mdl"));
+    venusObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/venusmap.xml"));
+
+    /*MARS*/
+    Node* mars_revol= sunPosNode->CreateChild("revol_mars"); 
+    mars_revol->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    mars_revol->SetRotation(Quaternion(0.0f, 0.0f, 1.85f));//inclinaison par rapport à l'axe de l'écliptique
+    Rotator* rotator_mars_revol= mars_revol->CreateComponent<Rotator>();
+    rotator_mars_revol->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));//Revolution autour du Soleil
+
+    Node* MarsNode=mars_revol->CreateChild("Mars_node");
+    MarsNode->SetPosition(Vector3(70.0f, 0.0f, 0.0f));
+    MarsNode->SetRotation(Quaternion(0.0f, 0.0f, 25.19f));
+    MarsNode->SetScale(Vector3(5.0f, 5.0f, 5.0f)); //Taille
+    Rotator* Mars_rot= MarsNode->CreateComponent<Rotator>();
+    Mars_rot->SetRotationSpeed(Vector3(0.0f, -100.0f, 0.0f)); //Vitesse rotation
+    StaticModel* MarsObject = MarsNode->CreateComponent<StaticModel>();
+    MarsObject->SetModel(cache->GetResource<Model>("Models/Sphere.mdl"));
+    MarsObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/marsmap.xml"));
+
+
+    /*JUPITER*/
+    Node* jupiter_revol= sunPosNode->CreateChild("revol_jupiter"); 
+    jupiter_revol->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    jupiter_revol->SetRotation(Quaternion(0.0f, 0.0f, 1.3f));//inclinaison par rapport à l'axe de l'écliptique
+    Rotator* rotator_jupiter_revol= jupiter_revol->CreateComponent<Rotator>();
+    rotator_jupiter_revol->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));//Revolution autour du Soleil
+
+    Node* JupiterNode=jupiter_revol->CreateChild("Jupiter_node");
+    JupiterNode->SetPosition(Vector3(100.0f, 0.0f, 0.0f));
+    JupiterNode->SetRotation(Quaternion(0.0f, 0.0f, 3.12f));
+    JupiterNode->SetScale(Vector3(20.0f, 20.0f, 20.0f)); //Taille
+    Rotator* Jupiter_rot= JupiterNode->CreateComponent<Rotator>();
+    Jupiter_rot->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f)); //Vitesse rotation
+    StaticModel* JupiterObject = JupiterNode->CreateComponent<StaticModel>();
+    JupiterObject->SetModel(cache->GetResource<Model>("Models/Sphere.mdl"));
+    JupiterObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/jupitermap.xml"));
+
+    /*SATURNE*/
+    Node* saturne_revol= sunPosNode->CreateChild("revol_saturne");  
+    saturne_revol->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    saturne_revol->SetRotation(Quaternion(0.0f, 0.0f, 2.48f));//inclinaison par rapport à l'axe de l'écliptique
+    Rotator* rotator_saturne_revol= saturne_revol->CreateComponent<Rotator>();
+    rotator_saturne_revol->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));//Revolution autour du Soleil
+
+    Node* SaturneNode=saturne_revol->CreateChild("Saturne_node");
+    SaturneNode->SetPosition(Vector3(150.0f, 0.0f, 0.0f));
+    SaturneNode->SetRotation(Quaternion(0.0f, 0.0f, 26.73f));
+    SaturneNode->SetScale(Vector3(20.0f, 20.0f, 20.0f)); //Taille
+    Rotator* Saturne_rot= SaturneNode->CreateComponent<Rotator>();
+    Saturne_rot->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f)); //Vitesse rotation
+    StaticModel* SaturneObject = SaturneNode->CreateComponent<StaticModel>();
+    SaturneObject->SetModel(cache->GetResource<Model>("Models/Sphere.mdl"));
+    StaticModel* SaturneAnneau = SaturneNode->CreateComponent<StaticModel>();
+    SaturneObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/saturnmap.xml"));
+    SaturneAnneau->SetModel(cache->GetResource<Model>("Models/Disk.mdl"));
+    SaturneAnneau->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/saturnringmap.xml"));
+
+
+    /*URANUS*/
+    Node* uranus_revol= sunPosNode->CreateChild("revol_uranus");  
+    uranus_revol->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    uranus_revol->SetRotation(Quaternion(0.0f, 0.0f, 0.77f));//inclinaison par rapport à l'axe de l'écliptique
+    Rotator* rotator_uranus_revol= uranus_revol->CreateComponent<Rotator>();
+    rotator_uranus_revol->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));//Revolution autour du Soleil
+
+    Node* UranusNode=uranus_revol->CreateChild("Uranus_node");
+    UranusNode->SetPosition(Vector3(200.0f, 0.0f, 0.0f));  
+    UranusNode->SetRotation(Quaternion(0.0f, 0.0f, 97.77f));
+    UranusNode->SetScale(Vector3(20.0f, 20.0f, 20.0f)); //Taille
+    Rotator* Uranus_rot= UranusNode->CreateComponent<Rotator>();
+    Uranus_rot->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f)); //Vitesse rotation
+    StaticModel* UranusObject = UranusNode->CreateComponent<StaticModel>();
+    UranusObject->SetModel(cache->GetResource<Model>("Models/Sphere.mdl"));
+    UranusObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/uranusmap.xml"));
+
+
+    /*NEPTUNE*/
+    Node* neptune_revol= sunPosNode->CreateChild("revol_neptune");  
+    neptune_revol->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    neptune_revol->SetRotation(Quaternion(0.0f, 0.0f, 1.76f));//inclinaison par rapport à l'axe de l'écliptique
+    Rotator* rotator_neptune_revol= neptune_revol->CreateComponent<Rotator>();
+    rotator_neptune_revol->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));//Revolution autour du Soleil
+
+    Node* NeptuneNode=neptune_revol->CreateChild("neptune_node");
+    NeptuneNode->SetPosition(Vector3(250.0f, 0.0f, 0.0f));
+    NeptuneNode->SetRotation(Quaternion(0.0f, 0.0f, 28.3f));
+    NeptuneNode->SetScale(Vector3(20.0f, 20.0f, 20.0f)); //Taille
+    Rotator* Neptune_rot= NeptuneNode->CreateComponent<Rotator>();
+    Neptune_rot->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f)); //Vitesse rotation
+    StaticModel* NeptuneObject = NeptuneNode->CreateComponent<StaticModel>();
+    NeptuneObject->SetModel(cache->GetResource<Model>("Models/Sphere.mdl"));
+    NeptuneObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/neptunemap.xml"));
+
+
+    /*PLUTON*/
+    Node* pluton_revol= sunPosNode->CreateChild("revol_pluton");  
+    pluton_revol->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    pluton_revol->SetRotation(Quaternion(0.0f, 0.0f, 0.77f));//inclinaison par rapport à l'axe de l'écliptique
+    Rotator* rotator_pluton_revol= pluton_revol->CreateComponent<Rotator>();
+    rotator_pluton_revol->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f));//Revolution autour du Soleil
+
+    Node* PlutonNode=pluton_revol->CreateChild("pluton_node");
+    PlutonNode->SetPosition(Vector3(300.0f, 0.0f, 0.0f));
+    PlutonNode->SetRotation(Quaternion(0.0f, 0.0f, 97.77f));
+    PlutonNode->SetScale(Vector3(20.0f, 20.0f, 20.0f)); //Taille
+    Rotator* Pluton_rot= PlutonNode->CreateComponent<Rotator>();
+    Pluton_rot->SetRotationSpeed(Vector3(0.0f, -10.0f, 0.0f)); //Vitesse rotation
+    StaticModel* PlutonObject = PlutonNode->CreateComponent<StaticModel>();
+    PlutonObject->SetModel(cache->GetResource<Model>("Models/Sphere.mdl"));
+    PlutonObject->SetMaterial(cache->GetResource<Material>("bin/Data/Materials/plutonmap.xml"));
+
+
+
+    /*StaticModel* SaturneAnneau = SaturneNode->CreateComponent<StaticModel>();
+    SaturneAnneau->SetModel(cache->GetResource<Model>("Models/Disk.mdl"));
+*/
 
     //moonObject->SetMaterial(cache->GetResource<Material>("Materials/earthmap.xml"));
     //Rotator* rotatorMoon = moonNode->CreateComponent<Rotator>();
